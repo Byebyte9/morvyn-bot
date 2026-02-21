@@ -1,6 +1,5 @@
 const g = require("./global.js");
 const prefix = require("../settings/config.json").prefix.value;
-const { extractTypeMessage } = require("./msg");
 const { handleCommand } = require("./commandHandler");
 
 exports.handler = async ({ sock, messages }) => {

@@ -61,5 +61,3 @@ const { default: makeWaSocket } = await import("baileys");
 	}
 	
 startBot()
-
-module.exports { startBot }
