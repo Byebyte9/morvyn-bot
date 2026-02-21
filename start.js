@@ -1,82 +1,65 @@
-const { 
-  default: makeWaSocket,
-  useMultiFileAuthState,
-  fetchLatestBaileysVersion,
-  DisconnectReason
- } = require('@whiskeysockets/baileys')
-const pino = require('pino')
-const path = require('path')
-const { handler } = require('./utils/handler')
+const {
+useMultiFileAuthState,
+fetchLatestBaileysVersion,
+DisconnectReason
+} = require("baileys");
+const pino = require("pino");
+const path = require("path");
+const { handler } = require("./utils/handler");
+const { loadCommands } = require("./utils/commandHandler.js");
 
-const config = require('./settings/config.json')
-const nomeDono = config.nomeDono.value
-const { question } = require('./utils/rl')
+const config = require("./settings/config.json");
+const nomeDono = config.nomeDono.value;
+const donoNumber = config.donoNumber.value
 
 async function startBot() {
+const { default: makeWaSocket } = await import("baileys");
 
-  const { state, saveState } = await useMultiFileAuthState(path.resolve(__dirname, 'assets', 'session'))
-  const { version } = await fetchLatestBaileysVersion()
+	const { state, saveCreds } = await useMultiFileAuthState(
+	path.resolve(__dirname, "assets", "auth")
+	);
+	const { version } = await fetchLatestBaileysVersion();
 
-  const sock = makeWaSocket({
-    auth: state,
-    version,
-    logger: pino({ level: 'silent' }),
-    browser: ['Morvyn', '1.0.0']
-  })
+	const sock = makeWaSocket({
+	auth: state,
+	printQRInTerminal: false,
+	logger: pino({ level: "silent" }),
+	});
 
-  if (!sock.authState.creds.registered) {
-    const option = await question(
-      "Como deseja conectar?\n1 - QR Code\n2 - Número\n\nEscolha: "
-    )
+	if (!sock.authState.creds.registered) {
 
-    if (option === '2') {
-      let phoneNumber = await question(
-        "Insira seu número (5561999999999)\nNúmero: "
-      )
+	setTimeout(async () => {
+	try {
+	const code = await sock.requestPairingCode(donoNumber);
+	console.log(`Código de pareamento: ${code}`);
+	} catch (error) {
+	console.log("erro ao tentar conectar", error);
+	}
+	}, 3000);
+	}
 
-      phoneNumber = phoneNumber.replace(/[^0-9]/g, "")
+	sock.ev.on('creds.update', saveCreds);
 
-      if (!phoneNumber) {
-        throw new Error('Número de telefone inválido')
-      }
+	sock.ev.on('connection.update', (update) => {
+	const { connection, lastDisconnect } = update;
 
-      const code = await sock.requestPairingCode(phoneNumber)
-      console.log(`Código de pareamento: ${code}`)
-    }
+	if (connection === "close") {
+	console.log("🔁 Reconectando...");
+	startBot();
+	} else if (connection === "open") {
+	console.log(`Olá, ${nomeDono}!\n`);
+	}
+	});
 
-    if (option === '1') {
-      console.log("Use o QR Code exibido no terminal para conectar.")
-    }
+	loadCommands();
 
-    if (option !== '1' && option !== '2') {
-      throw new Error('Opção inválida')
-    }
-  }
-
-  sock.ev.on('creds.update', saveState)
-
-  sock.ev.on('connection.update', (connection) => {
-    const { connection, lastDisconnect } = connection
-
-    if (connection === 'close') {
-      const shouldReconnect =
-        sock?.lastDisconnect?.error?.output?.statusCode !==
-        DisconnectReason.loggedOut
-
-      console.log('🔁 Reconectando...')
-
-      if (shouldReconnect) {
-        startBot()
-      } else if (connection === 'open') {
-        console.log(`Olá, ${nomeDono}!\n`)
-      }
-    }
-  })
-
-  sock.ev.on('messages.upsert', async ({ messages }) => {
-    await handler({ sock, messages })
-  })
-  
-}
-
+	sock.ev.on("messages.upsert", async ({ messages }) => {
+	await handler({ sock, messages });
+	
+	
+	});
+	}
+	
 startBot()
+
+module.exports { startBot }

@@ -180,10 +180,6 @@ module.exports = {
     )[0];
   },
 
-  get typeMessage() {
-    return Object.keys(this.msg.message)[0];
-  },
-
   get replyAuthor() {
     return this.msg?.message?.extendedTextMessage?.contextInfo?.participant;
   },
