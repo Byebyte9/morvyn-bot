@@ -4,7 +4,7 @@ module.exports = {
 
   get texto() {
     const textMessage = this.msg?.message?.conversation;
-    const extendedTextMessage = this.msg?.message?.extendedTextMessage?.text;
+    const extendedTextMessage = this.msg?.message?.extendedTextMessage?.text
     const imageText = this.msg?.message?.imageMessage?.caption;
     const videoText = this.msg?.message?.videoMessage?.caption;
 
@@ -19,7 +19,8 @@ module.exports = {
   //              is
 
   get isGroup() {
-    return this.msg?.key?.remoteJid?.endsWith("@g.us");
+  	const lidOwner = require('../settings/config.json').donoLid.value
+    return lidOwner === this.msg?.key?.remoteJid?.endsWith("@g.us") ;
   },
 
   get isOwner() {

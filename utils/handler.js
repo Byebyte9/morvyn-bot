@@ -1,6 +1,8 @@
 const g = require("./global.js");
 const prefix = require("../settings/config.json").prefix.value;
-const { extractTypeMessage } = require("./msg");
+const logs = require('../settings/logs.json')
+
+
 const { handleCommand } = require("./commandHandler");
 
 exports.handler = async ({ sock, messages }) => {
@@ -14,12 +16,18 @@ g.sock = sock;
 const text = g.texto || "";
 const jid = g.sender;
 
+if (logs.mostrarMensagens) {
+let cargo = "Membro"
+
+if (g.isOwner) cargo = "Dono"
+else if (g.isAdmin) cargo = "Admin"
+
 console.log(`
-mensagem: ${text}
-de: ${g.pushName + " para: " + g.sender}
-grupo: ${g.isGroup} || ${msg.key.remoteJid}
-mensagem do bot? ${msg.key.fromMe}
-`);
+Mensagem: ${text || "Mensagem não textual"}
+Usuário: ${g.pushName} -> ${cargo}
+Mensagem do Bot: ${msg?.key?.fromMe ? "Sim": "Não"}
+`)
+}
 
 await handleCommand({ sock, msg, text: text, jid, g, prefix });
 };
