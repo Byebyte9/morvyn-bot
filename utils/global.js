@@ -4,7 +4,7 @@ module.exports = {
 
   get texto() {
     const textMessage = this.msg?.message?.conversation;
-    const extendedTextMessage = this.msg?.message?.extendedTextMessage?.text;
+    const extendedTextMessage = this.msg?.message?.extendedTextMessage?.text
     const imageText = this.msg?.message?.imageMessage?.caption;
     const videoText = this.msg?.message?.videoMessage?.caption;
 
@@ -19,7 +19,9 @@ module.exports = {
   //              is
 
   get isGroup() {
-    return this.msg?.key?.remoteJid?.endsWith("@g.us");
+  	const loadJson = require("./utils/loadJson")
+  	const lidOwner = loadJson('../settings/config.json').donoLid.value
+    return lidOwner === this.msg?.key?.remoteJid?.endsWith("@g.us") ;
   },
 
   get isOwner() {
@@ -263,36 +265,5 @@ module.exports = {
 
     return buffer
   },
-
-  
-
-
-  //          Tratamento de Erros
-
-
-
-  handleErrors(error, context = {}) {
-    const {
-      command = 'desconhecido',
-      jid = this.msg.key.remoteJid,
-    } = context
-
-    console.log(`❌ Erro ao executar o comando: ${command} com o user: ${this.pushName}`)
-    console.log("Mensagem: ", error.message);
-    console.log("Stack: ", error.stack?.split("\n")[0]);
-    
-    if (jid) {
-      this.sendText(jid, `🚨 Opa! Algo deu errado aqui 😅\n tente novamente em alguns segundos.`);
-    }
-
-  },
-
-  async safeRun(fn, context) {
-    try {
-      await fn();
-    } catch (err) {
-      this.handleErrors(err, context);
-    }
-  }
   
 };

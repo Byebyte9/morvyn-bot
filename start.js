@@ -1,3 +1,4 @@
+const loadJson = require("./loadJson")
 const {
 useMultiFileAuthState,
 fetchLatestBaileysVersion,
@@ -7,8 +8,9 @@ const pino = require("pino");
 const path = require("path");
 const { handler } = require("./utils/handler");
 const { loadCommands } = require("./utils/commandHandler.js");
+const { registerGlobalHandlers } = require("./utils/errors/globalErrorHandler")
 
-const config = require("./settings/config.json");
+const config = loadJson("./settings/config.json");
 const nomeDono = config.nomeDono.value;
 const donoNumber = config.donoNumber.value
 
@@ -54,10 +56,19 @@ const { default: makeWaSocket } = await import("baileys");
 	loadCommands();
 
 	sock.ev.on("messages.upsert", async ({ messages }) => {
-	await handler({ sock, messages });
-	
-	
-	});
+  try {
+    await handler({ sock, messages })
+  } catch (error) {
+    const { handleError } = require("./utils/errors/globalErrorHandler")
+    handleError(error, "Erro ao executar comando")
+  }
+})
 	}
+<<<<<<< HEAD
 	
 startBot()
+=======
+
+	startBot()
+	registerGlobalHandlers()
+>>>>>>> dev
