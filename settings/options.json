@@ -1,6 +1,6 @@
 {
 	"mostrarComandosChamados": true,
-	"mostrarTodosComandos": true,
+	"mostrarTodosComandos": false,
 	"mostrarMensagens": false,
-	"mostrarErros": true
+	"autoReconectar": true
 }

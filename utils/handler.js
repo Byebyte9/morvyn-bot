@@ -1,6 +1,7 @@
+const loadJson = require("../loadJson")
 const g = require("./global.js");
-const prefix = require("../settings/config.json").prefix.value;
-const logs = require('../settings/logs.json')
+const prefix = loadJson("settings/config.json").prefix.value;
+const logs = loadJson('settings/options.json')
 
 
 const { handleCommand } = require("./commandHandler");

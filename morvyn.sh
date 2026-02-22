@@ -36,12 +36,35 @@ echo "Prefixo: $(node -p "require('./settings/config.json').prefix.value")"
 echo ""
 echo "Você esta usando Morvyn - ${licence}"
 echo ""
-echo -e "\e[38;5;46mMORVYN - Auto reconexão ativada ✔\e[0m"
 
-node start.js --code
+  AUTO=$(node -p "require('./settings/options.json').autoReconectar")
 
-sleep 1
+  if [ "$AUTO" != "true" ]; then
+    echo "Auto reconexão desativada"
+    echo ""
+    
+    node start.js --code
 
-printf "${BLUE}︎Iniciando Sistemas [ ! ]\n"
+    exit 0
+  fi
+  
+  if [ "$AUTO" = "true" ]; then 
+    echo -e "\e[38;5;46mMORVYN - Auto reconexão ativada ✔\e[0m"
+    echo ""
+    
+    node start.js --code
+    echo ""
+    echo "Morvyn reconectando em..."
+    echo "5"
+    sleep 1
+    echo "4"
+    sleep 1
+    echo "3"
+    sleep 1
+    echo "2"
+    sleep 1
+    echo "1"
+    sleep 1
+  fi
 
 done

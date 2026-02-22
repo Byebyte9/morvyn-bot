@@ -1,21 +1,21 @@
 {
-    "prefix": {
-        "value": "#"
-    },
+	"prefix": {
+		"value": "#"
+	},
 
-    "donoNumber": {
-        "value": "5561992583916"
-    },
+	"donoNumber": {
+		"value": "5561992583916"
+	},
 
-    "botName": {
-        "value": "𝕸𝖔𝖗𝖛𝖞𝖓-𝕭𝕺𝕿"
-    },
+	"botName": {
+		"value": "𝕸𝖔𝖗𝖛𝖞𝖓-𝕭𝕺𝕿"
+	},
 
-    "nomeDono": {
-        "value": "𝔅𝑟𝑘𝑛"
-    },
+	"nomeDono": {
+		"value": "𝔅𝑟𝑘𝑛"
+	},
 
-    "donoLid": {
-        "value": "157844779323622"
-    }
+	"donoLid": {
+		"value": "157844779323622"
+	}
 }
