@@ -64,11 +64,6 @@ const { default: makeWaSocket } = await import("baileys");
   }
 })
 	}
-<<<<<<< HEAD
-	
-startBot()
-=======
 
 	startBot()
 	registerGlobalHandlers()
->>>>>>> dev

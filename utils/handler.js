@@ -1,13 +1,9 @@
 const loadJson = require("../loadJson")
 const g = require("./global.js");
-<<<<<<< HEAD
 const prefix = require("../settings/config.json").prefix.value;
-=======
-const prefix = loadJson("settings/config.json").prefix.value;
 const logs = loadJson('settings/options.json')
 
 
->>>>>>> dev
 const { handleCommand } = require("./commandHandler");
 
 exports.handler = async ({ sock, messages }) => {
