@@ -1,5 +1,5 @@
-const loadJson = require("../../loadJson")
-const config = loadJson("settings/config.json");
+const loadJson = require("../../../loadJson")
+const config = loadJson("./src/settings/config.json");
 const prefix = config.prefix.value;
 
 module.exports = {

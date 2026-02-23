@@ -6,11 +6,12 @@ DisconnectReason
 } = require("baileys");
 const pino = require("pino");
 const path = require("path");
-const { handler } = require("./utils/handler");
-const { loadCommands } = require("./utils/commandHandler.js");
-const { registerGlobalHandlers } = require("./utils/errors/globalErrorHandler")
+const { handler } = require("./src/core/handler.js");
+const { loadCommands } = require("./src/core/commandHandler.js");
+const { registerGlobalHandlers } = require("./src/utils/errors/globalErrorHandler")
 
-const config = loadJson("./settings/config.json");
+const config = loadJson("./src/settings/config.json");
+const logs = loadJson('src/settings/options.json')
 const nomeDono = config.nomeDono.value;
 const donoNumber = config.donoNumber.value
 
@@ -18,7 +19,7 @@ async function startBot() {
 const { default: makeWaSocket } = await import("baileys");
 
 	const { state, saveCreds } = await useMultiFileAuthState(
-	path.resolve(__dirname, "assets", "auth")
+	path.resolve(__dirname, "src", "assets", "auth")
 	);
 	const { version } = await fetchLatestBaileysVersion();
 
@@ -55,14 +56,25 @@ const { default: makeWaSocket } = await import("baileys");
 
 	loadCommands();
 
-	sock.ev.on("messages.upsert", async ({ messages }) => {
-  try {
-    await handler({ sock, messages })
-  } catch (error) {
-    const { handleError } = require("./utils/errors/globalErrorHandler")
-    handleError(error, "Erro ao executar comando")
-  }
-})
+	sock.ev.on("messages.upsert", async (data) => {
+		const { messages } = data
+	if (logs.mostrarMessage_msg) {
+  console.log("\n=====================")
+	console.log("Opa, data aqui: ", data)
+	const { messages } = data
+	console.log("Messages key bem aqui: ", messages[0].key)
+	console.log("Messages message aqui: ", messages[0].message)
+	console.log("=====================")
+
+	}
+
+	try {
+	await handler({ sock, messages })
+	} catch (error) {
+	const { handleError } = require("./src/utils/errors/globalErrorHandler")
+	handleError(error, "Erro ao executar comando")
+	}
+	})
 	}
 
 	startBot()

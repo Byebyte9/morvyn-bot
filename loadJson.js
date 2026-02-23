@@ -1,12 +1,12 @@
 const fs = require("fs")
 const path = require("path")
-const { handleError } = require("./utils/errors/globalErrorHandler")
+const { handleError } = require("./src/utils/errors/globalErrorHandler")
 
 function loadJson(relativePath) {
 try {
 
 // 🔥 base fixa do projeto
-const baseDir = path.resolve(__dirname, "")
+const baseDir = path.resolve(__dirname)
 
 const fullPath = path.join(baseDir, relativePath)
 

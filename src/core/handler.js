@@ -1,10 +1,10 @@
-const loadJson = require("../loadJson")
-const g = require("./global.js");
+const loadJson = require("../../loadJson")
+const g = require("../utils/global.js");
 const prefix = require("../settings/config.json").prefix.value;
-const logs = loadJson('settings/options.json')
+const logs = loadJson('src/settings/options.json')
 
 
-const { handleCommand } = require("./commandHandler");
+const { handleCommand } = require("../core/commandHandler");
 
 exports.handler = async ({ sock, messages }) => {
 
@@ -26,6 +26,7 @@ else if (g.isAdmin) cargo = "Admin"
 console.log(`
 Mensagem: ${text || "Mensagem não textual"}
 Usuário: ${g.pushName} -> ${cargo}
+Número: ${g.userNumber.split("@")[0]}
 Mensagem do Bot: ${msg?.key?.fromMe ? "Sim": "Não"}
 `)
 }

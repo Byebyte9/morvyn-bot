@@ -1,7 +1,7 @@
-const loadJson = require("../../loadJson")
-const { commands } = require("../../utils/commandHandler");
+const loadJson = require("../../../loadJson")
+const { commands } = require("../../core/commandHandler");
 const categories = require("../../settings/categories");
-const config = loadJson("settings/config.json");
+const config = loadJson("./src/settings/config.json");
 
 const botName = config.botName.value;
 const prefix = config.prefix.value;

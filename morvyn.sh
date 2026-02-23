@@ -21,7 +21,7 @@ figlet MORVYN | while IFS= read -r line; do
   ((i++))
   
 done
-licence=$(node -p "require('./command/group/licence.json').licence")
+licence=$(node -p "require('./src/command/group/licence.json').licence")
 echo -e "\e[38;5;99m╔══════════════════════════════════════╗\e[0m"
 echo -e "\e[38;5;99m║                                      ║\e[0m"
 echo -e "\e[38;5;111m║        🚀 MORVYN BOT ONLINE          ║\e[0m"
@@ -32,12 +32,12 @@ echo ""
 echo "🕒 Iniciado em: $(date '+%d/%m/%Y %H:%M:%S')"
 echo "📦 Versão: $(node -p "require('./package.json').version")"
 echo "🟢 Node: $(node -v)"
-echo "Prefixo: $(node -p "require('./settings/config.json').prefix.value")"
+echo "Prefixo: $(node -p "require('./src/settings/config.json').prefix.value")"
 echo ""
 echo "Você esta usando Morvyn - ${licence}"
 echo ""
 
-  AUTO=$(node -p "require('./settings/options.json').autoReconectar")
+  AUTO=$(node -p "require('./src/settings/options.json').autoReconectar")
 
   if [ "$AUTO" != "true" ]; then
     echo "Auto reconexão desativada"

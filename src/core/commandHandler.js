@@ -1,7 +1,7 @@
-const loadJson = require("../loadJson")
+const loadJson = require("../../loadJson")
 const fs = require('fs')
 const path = require('path')
-const logs = loadJson('settings/options.json')
+const logs = loadJson('src/settings/options.json')
 
 const commands = new Map()
 
