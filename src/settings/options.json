@@ -3,5 +3,5 @@
 	"mostrarTodosComandos": true,
 	"mostrarMensagens": true,
 	"mostrarMessage_msg": true,
-	"autoReconectar": false
+	"autoReconectar": true
 }

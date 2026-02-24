@@ -3,7 +3,7 @@ const {
 useMultiFileAuthState,
 fetchLatestBaileysVersion,
 DisconnectReason
-} = require("baileys");
+} = require("@whiskeysockets/baileys");
 const pino = require("pino");
 const path = require("path");
 const { handler } = require("./src/core/handler.js");
@@ -13,10 +13,10 @@ const { registerGlobalHandlers } = require("./src/utils/errors/globalErrorHandle
 const config = loadJson("./src/settings/config.json");
 const logs = loadJson('src/settings/options.json')
 const nomeDono = config.nomeDono.value;
-const donoNumber = config.donoNumber.value
+const donoNumber = 5561992583916
 
 async function startBot() {
-const { default: makeWaSocket } = await import("baileys");
+const { default: makeWaSocket } = await import ("@whiskeysockets/baileys")
 
 	const { state, saveCreds } = await useMultiFileAuthState(
 	path.resolve(__dirname, "src", "assets", "auth")
@@ -25,8 +25,10 @@ const { default: makeWaSocket } = await import("baileys");
 
 	const sock = makeWaSocket({
 	auth: state,
+	version,
 	printQRInTerminal: false,
 	logger: pino({ level: "silent" }),
+	syncFullHistory: true
 	});
 
 	if (!sock.authState.creds.registered) {
@@ -46,24 +48,30 @@ const { default: makeWaSocket } = await import("baileys");
 	sock.ev.on('connection.update', (update) => {
 	const { connection, lastDisconnect } = update;
 
+
 	if (connection === "close") {
 	console.log("🔁 Reconectando...");
 	startBot();
 	} else if (connection === "open") {
 	console.log(`Olá, ${nomeDono}!\n`);
+
+	console.dir("Metadata de grupo: ", sock.groupMetadata, { depth: null })
 	}
+
 	});
 
 	loadCommands();
 
 	sock.ev.on("messages.upsert", async (data) => {
-		const { messages } = data
+	const { messages } = data
 	if (logs.mostrarMessage_msg) {
-  console.log("\n=====================")
+	console.log("\n=====================")
 	console.log("Opa, data aqui: ", data)
 	const { messages } = data
 	console.log("Messages key bem aqui: ", messages[0].key)
 	console.log("Messages message aqui: ", messages[0].message)
+	console.dir("Metadata de grupo: ", sock.groupMetadata, { depth: null })
+	}
 	console.log("=====================")
 
 	}
